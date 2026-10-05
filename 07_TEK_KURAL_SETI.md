@@ -1,4 +1,4 @@
-# Tek kural seti (çelişkiler çözüldü) — sürüm 1
+# Tek kural seti (çelişkiler çözüldü) — sürüm 1.1
 
 Bu dosya, 05'teki 12 çelişkinin her biri için **tek** bir tanım seçer. Seçim sırası:
 1. **Kullanıcının kendi cevabı** (5 Ekim 2026'da sorulan 12 soru, aşağıda).
@@ -21,6 +21,10 @@ Bu dosya, 05'teki 12 çelişkinin her biri için **tek** bir tanım seçer. Seç
 | 10 | Enstrümanlar | **EURUSD, XAUUSD, NAS100** (GBPUSD yok) |
 | 11 | Uygulanan model | **ICT 2022 modeli + TTFM (fraktal)** |
 | 12 | Tarihli işlem kaydı | **Yok** |
+| 13 | EMA'lara hangi TF'de bakıyor | **Girişte 5m; bias için 1H ve 4H** |
+| 14 | EMA şartı | **Gözle bakıyor**, kesin kural yok |
+| 15 | Asgari R | **1.5 uygun** |
+| 16 | LuxAlgo ayarları | Hepsi açık (aşağıdaki tablo); FVG timeframe = grafiğin kendi TF'si; diğer ayarlar varsayılan; OB mitigation = High/Low |
 
 ## LuxAlgo SMC'nin tanımları (bot bunları birebir kopyalamalı)
 Kaynak: LuxAlgo SMC Pine v5 kodunun açık kaynak Python portu (`github.com/makeitcount89/Trading-Smart-Money`, `scripts/engine.py`). LuxAlgo'nun kendi sitesi ve TradingView bu ortamdan erişilemedi.
@@ -36,6 +40,34 @@ Kaynak: LuxAlgo SMC Pine v5 kodunun açık kaynak Python portu (`github.com/make
 
 **Önemli sonuç:** LuxAlgo'nun bullish OB'si çoğu zaman **sweep yapan mumun kendisidir**, çünkü kırılan tepe ile kırılım arasındaki en düşük dipli bar odur. Kullanıcının "stop sweep ucunun ötesi" kuralı bu yüzden "stop OB'nin ötesi" ile neredeyse aynı yere düşüyor. İki kaynak birbirini tutuyor.
 
+## Kullanıcının LuxAlgo SMC ayarları (5 Ekim 2026, kullanıcının beyanı)
+| Bölüm | Durum | Değer |
+|---|---|---|
+| Mode / Style | — | Historical / Monochrome |
+| Internal Structure (kesikli BOS/CHoCH) | Açık | Varsayılan |
+| Swing Structure (düz BOS/CHoCH, HH/HL etiketleri) | Açık | Varsayılan |
+| Internal Order Blocks | Açık | Varsayılan |
+| Swing Order Blocks | Açık | Varsayılan |
+| OB Mitigation | — | **High/Low** |
+| Equal Highs/Lows | Açık | Varsayılan |
+| Fair Value Gaps | Açık | **Timeframe = grafiğin TF'si**; diğerleri varsayılan |
+| Premium/Discount Zones | Açık | Varsayılan |
+| Daily/Weekly/Monthly High-Low | Açık | Varsayılan |
+
+"Varsayılan" değerler port kodundan teyitli olanlar:
+- Internal pivot uzunluğu 5, swing pivot uzunluğu 50.
+- ATR(200) ile yüksek volatilite filtresi.
+- 5'er OB gösterimi.
+- High/Low mitigation.
+
+FVG auto threshold ve EQH/EQL eşiği/onay barı varsayılan değerleri **kaynak koddan teyit edilemedi**. Bot bunları LuxAlgo'nun bilinen v5 varsayılanlarıyla (FVG auto threshold açık; EQH/EQL onay 3 bar, eşik 0.1 × ATR) kodlayacak. İlk kalibrasyonda kullanıcının grafiğindeki kutularla karşılaştırılacak.
+
+**Pratik sonuç:** FVG ve OB'ler grafiğin TF'sine göre çiziliyor.
+- 5m grafikte 5m kutular görünüyor; bias için 1H/4H'a bakıldığında 1H/4H kutular görünüyor.
+- Bot iki katmanı da hesaplar:
+  - **Bağlam:** 1H/4H LuxAlgo OB/FVG, premium/discount bölgesi, PDH/PDL, EQH/EQL.
+  - **Tetik:** 5m LuxAlgo internal CHoCH + 5m FVG.
+
 ## 12 çelişkinin çözümü
 | # | Konu | Seçilen tek tanım | Neden |
 |---|---|---|---|
@@ -47,8 +79,8 @@ Kaynak: LuxAlgo SMC Pine v5 kodunun açık kaynak Python portu (`github.com/make
 | 6 | Adlandırma | **MSS** = sweep sonrası, önceki internal trendin tersine ilk kapanışlı kırılım (LuxAlgo'da internal CHoCH). **BOS** = trend yönünde kapanışlı kırılım. CHoCH+, BMS, MSB, FMS adları kullanılmaz. | Tek sözlük; LuxAlgo'nun etiketleriyle birebir eşleşiyor, böylece kullanıcı botun mesajını grafikte görebilir. |
 | 7 | Order Block | **LuxAlgo tanımı** (yukarıdaki tablo). ICT'nin "son karşı renkli mum" tanımı yalnız not olarak kalır. | Kullanıcının gördüğü gri kutular bunlar. Bot farklı tanım kullanırsa kullanıcının grafiğiyle uyuşmaz. |
 | 8 | OTE | **0.62-0.79 (0.705 orta).** Yalnız etiket olarak; filtre değil. | Kullanıcı OTE değil CE kullanıyor. Aralık ICT'nin kendi Fib ayarı. |
-| 9 | Hedef | **En yakın karşı likidite:** karşı internal/swing pivot, EQH/EQL, seans ucu, PDH/PDL; hangisi önce geliyorsa. **Asgari R ≥ 1.5 (geçici).** | Kullanıcı cevabı. Sabit R'yi kaynakların yarısı söylüyor, yarısı söylemiyor. 1.5, kullanıcının görsellerindeki en düşük R; onaya sunulacak. |
-| 10 | Bias | **1H ve 4H yapı yönü aynı** (LuxAlgo swing/internal trend) **+ EMA filtresi**: long için EMA20 > EMA50 > EMA100 > EMA200, short için tersi. | Kullanıcı cevabı (1H/4H trend + EMA trend filtresi). EMA'ların hangi TF'de bakıldığı açık soru (aşağıda). |
+| 9 | Hedef | **En yakın karşı likidite:** karşı internal/swing pivot, EQH/EQL, seans ucu, PDH/PDL; hangisi önce geliyorsa. **Asgari R ≥ 1.5.** | Kullanıcı cevabı; 1.5R kullanıcı tarafından onaylandı. |
+| 10 | Bias ve EMA | **Bias:** 1H ve 4H'ta LuxAlgo yapı yönü aynı **ve** her iki TF'de EMA filtresi geçer. **Giriş filtresi:** 5m'de EMA filtresi geçer. **EMA filtresi (long):** fiyat > EMA200 ve EMA50 > EMA200. Short için tersi. Dört EMA'nın tam sıralı olup olmadığı (20>50>100>200) yalnız **etiket** olarak yazılır. | Kullanıcı EMA'ya 5m'de girişte, 1H/4H'ta bias için bakıyor ama "gözle" bakıyor. Gözü taklit eden en basit ölçülebilir kural bu. Tam sıralama şartı sinyalleri çok azaltır; etiket olarak tutulup gölge dönemde kullanıcının "girerdim/girmezdim" cevaplarıyla hangisinin gözüne uyduğu ölçülecek. |
 | 11 | FVG dolunca ne olur | **FVG gövdeyle kapanarak geçilirse geçersizdir.** İçine fitil atıp dönmesi "tutuyor" demektir. | ICT notları + #5 ile tutarlı. LQ'nun "tamamen dolunca dönüş" iddiası kanıtsız ve diğerleriyle çelişiyor. |
 | 12 | FVG adları | **Bullish FVG / bearish FVG.** "Undervalued/overrated" kullanılmaz. | Standart ICT dili. |
 
@@ -62,19 +94,18 @@ Ek tek tanımlar:
 ## Tek akış: AZG-K1 v1 (EURUSD, XAUUSD, NAS100)
 1. **Gün filtresi:** NFP/CPI/FOMC günü değilse devam.
 2. **Pencere:** London 02:00-05:00 NY; NY 07:00-10:00 (NAS100: 08:30-11:00).
-3. **Bias:** 1H ve 4H yapı aynı yönde ve EMA20/50/100/200 o yönde dizili. Değilse sinyal yok.
-4. **Bağlam:** Fiyat, bias yönündeki dolmamış bir 15m/1H LuxAlgo OB veya FVG'nin içinde ya da bir likidite seviyesinde (seans ucu, PDH/PDL, EQH/EQL).
+3. **Bias:** 1H ve 4H'ta LuxAlgo yapı yönü aynı, iki TF'de de EMA filtresi geçiyor (fiyat ve EMA50, EMA200'ün doğru tarafında). Değilse sinyal yok.
+4. **Bağlam:** Fiyat bias yönündeki dolmamış bir 1H/4H LuxAlgo OB veya FVG'nin içinde, ya da bias yönünün discount/premium bölgesinde bir likidite seviyesinde (seans ucu, PDH/PDL, EQH/EQL).
 5. **Sweep:** Bias'ın tersi yöndeki likidite fitille alınır, mum içeri kapanır.
-6. **MSS:** 5m'de (veya 3m'de) sweep'ten önceki son karşı internal pivot gövde kapanışıyla kırılır; kıran bacakta FVG var.
+6. **MSS:** 5m'de sweep'ten önceki son karşı internal pivot (LuxAlgo internal CHoCH) gövde kapanışıyla kırılır; kıran bacakta 5m FVG var. 5m'de EMA filtresi geçiyor. 3m yalnız ikinci aşamada denenecek.
 7. **Konum:** FVG'nin CE'si sweep→MSS aralığının doğru yarısında (long için discount).
 8. **Tetik:** Fiyat CE'ye değer; ardından 5m/3m'de bias yönünde kapanan ilk mum. **Telegram mesajı bu anda gider.**
 9. **İç değerlendirme (mesajda TP/SL/lot yok):** Geçersizlik = sweep ucu + spread. Hedef = en yakın karşı likidite. R < 1.5 ise sinyal gönderilmez.
 10. **Etiketler:** TTFM uyumu, OTE içinde mi, SMT (EURUSD↔DXY, NAS100↔SPX, XAU↔DXY), Silver Bullet penceresi mi.
 
-## Hâlâ açık kalan 3 küçük soru
-1. **EMA'lara hangi TF'de bakıyorsun?** Giriş grafiğinde (5m/3m) mi, 1H'ta mı? "Ters diziliyse girmem" derken 4'ünün de sıralı olması mı şart, yoksa fiyatın EMA200'ün doğru tarafında olması yeter mi?
-2. **LuxAlgo ayarların:** FVG açık mı? FVG'nin timeframe'i ne (chart mı, 15m mi)? *Auto threshold* açık mı? OB *mitigation* "Close" mu "High/Low" mu? Ayar ekranının ekran görüntüsü yeterli.
-3. **Asgari R:** 1.5 uygun mu?
+## Açık soru kalmadı
+- Kural seti kullanıcının cevaplarıyla kapandı.
+- Kalan belirsizlikler (FVG eşiği, EMA'nın "göz" karşılığı, bağlamın 1H mi 4H mi olduğu) **soruyla değil ölçümle** netleşecek: aşağıdaki gölge dönemde.
 
 ## Kayıt olmadığı için doğrulama planı değişti
 Kullanıcının tarihli işlem kaydı yok. Bu yüzden:

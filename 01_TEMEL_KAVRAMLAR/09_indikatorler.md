@@ -33,8 +33,8 @@ Kaynaklar: Kullanıcı ekran görüntüleri (K28, K31, K33, K35-K39), N-ana (Flu
 
 ## 9.3 Kullanıcının kullandığı EMA'lar ICT kaynaklarında yok
 - Hiçbir ICT kaynağı EMA kullanmıyor; ICT "indikatör okumalarıyla işlem yapmayız" diyor [N-A3].
-- Kullanıcının son dönem grafiklerinde EMA 20/50/100/200 var. Kullanıcının cevabı: **trend filtresi**, EMA'lar ters diziliyse işleme girmiyor. Hangi TF'de bakıldığı açık soru (bkz. 07).
+- Kullanıcının son dönem grafiklerinde EMA 20/50/100/200 var. Kullanıcının cevabı: **trend filtresi**, EMA'lar ters diziliyse işleme girmiyor. Girişte 5m'de, bias için 1H ve 4H'ta; "gözle" bakıyor. Ölçülebilir karşılığı 07'de.
 
 ## Eksik olan
-- LuxAlgo SMC'nin ayarları: FVG açık mı, FVG timeframe'i, auto threshold, OB mitigation (07'de soruldu).
+- LuxAlgo SMC ayarları kullanıcıdan alındı (07). FVG auto threshold ve EQH/EQL varsayılanları kaynak koddan teyit edilemedi.
 - Seans indikatörünün adı ve kaynak kodu?
