@@ -115,3 +115,13 @@ Kullanıcının tarihli işlem kaydı yok. Bu yüzden:
 4. **Bundan sonra her işlem için kayıt tutulmalı:** tarih, saat, enstrüman, yön, giriş, stop, hedef, sonuç ve tek cümle gerekçe. Bunun için hazır bir şablon yapılabilir.
 
 Bot koduna dokunulmadı; kullanıcı "başla" demeden dokunulmayacak.
+
+## Sürüm 1.2 ve ilk test (5 Ekim 2026)
+- **Kalibrasyon:** Kullanıcı 28 adayı kör etiketledi. Gerekçelerinden iki şart eklendi:
+  - **FVG ≥ 0.2 × ATR14 (5m).** Daha küçük boşluklar FVG sayılmaz.
+  - **FVG'den tetiğe en fazla 12 mum (1 saat).** Fiyat oyalanıp akümüle olduysa sinyal yok.
+- **Ön-kayıtlı tek atış testi:** Hiç bakılmamış dönem; EURUSD 2025-06 → 2026-05, XAUUSD 2025-06 → 2026-05, NAS100 2025-11 → 2026-05.
+  - 54 sinyal, ortalama −0.09R, t = −0.52, kazanma %33.
+  - Ters yön plasebosu +0.33R.
+  - **Sonuç: KALMADI.** Kuralın mekanik hali bu dönemde para kazandırmadı.
+- **Ayrıntı:** `r5vers/azeghor-1-base-eurusd` → `arastirma/2026-10-05_azg_k1_golge/README.md`.
