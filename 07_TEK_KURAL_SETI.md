@@ -125,3 +125,13 @@ Bot koduna dokunulmadı; kullanıcı "başla" demeden dokunulmayacak.
   - Ters yön plasebosu +0.33R.
   - **Sonuç: KALMADI.** Kuralın mekanik hali bu dönemde para kazandırmadı.
 - **Ayrıntı:** `r5vers/azeghor-1-base-eurusd` → `arastirma/2026-10-05_azg_k1_golge/README.md`.
+
+## Sürüm 1.3: kullanıcının "geometri" tarifi (5 Ekim 2026)
+- **Tanım:**
+  - OTE %62-79 şart (Fib 5m'de sweep ucundan kırılım ucuna).
+  - Net swing (bacağın başladığı uç, iki yanda ≥3 mum).
+  - Displacement'lı ve orantılı FVG (orta mum gövdesi ≥ %50 ve ≥ 0.8 ATR; FVG ≥ 0.2 ATR ve ≥ bacağın %15'i).
+  - Fiyat girişten önce FVG'nin öbür ucunu geçerse iptal.
+- **Yeni veri (Dukascopy):** 2,5 yılda 3 enstrümanda 12 sinyal, ortalama −0.13R, kazanma 4/12. **Belirsiz:** az işlem.
+- **Aynı veride v1.2:** 135 sinyal, −0.17R. **Kalmadı.**
+- **Kalibrasyon notu:** Kullanıcının etiketlerinde OTE, girdiği ve girmediği işlemleri ayırmadı.
