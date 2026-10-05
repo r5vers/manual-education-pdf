@@ -10,8 +10,8 @@ Kaynaklar: Kullanıcı ekran görüntüleri (K28, K31, K33, K35-K39), N-ana (Flu
 | EMA 50 (close) | K33 | — | Standart |
 | EMA 20 / 50 / 100 / 200 | K35-K39 | Yeşil tonlarda 4 EMA | Standart |
 | Pozisyon aracı (long/short kutusu) | Hepsi | TradingView standart | — |
-| Gri dikdörtgen bölgeler | Çoğu | Elle çizilmiş mi, indikatör mü **belli değil** | — |
-| Kesikli yatay çizgiler | Çoğu | Kırılan swing seviyesi (MSS/BOS) | — |
+| Gri dikdörtgen bölgeler | Çoğu | LuxAlgo SMC'nin OB/FVG kutuları (kullanıcı teyit etti) | — |
+| Kesikli yatay çizgiler | Çoğu | Büyük olasılıkla LuxAlgo internal yapı (BOS/CHoCH) çizgileri; kırılım gövde kapanışıyla | — |
 
 ## 9.2 Kaynaklarda geçen indikatörler
 - **FluxCharts Price Action Toolkit** [N-ana]:
@@ -33,7 +33,7 @@ Kaynaklar: Kullanıcı ekran görüntüleri (K28, K31, K33, K35-K39), N-ana (Flu
 
 ## 9.3 Kullanıcının kullandığı EMA'lar ICT kaynaklarında yok
 - Hiçbir ICT kaynağı EMA kullanmıyor; ICT "indikatör okumalarıyla işlem yapmayız" diyor [N-A3].
-- Kullanıcının son dönem grafiklerinde EMA 20/50/100/200 var. Bunun **ne için** kullanıldığı (trend filtresi mi, dinamik destek mi) **kullanıcıya sorulmalı.**
+- Kullanıcının son dönem grafiklerinde EMA 20/50/100/200 var. Kullanıcının cevabı: **trend filtresi**, EMA'lar ters diziliyse işleme girmiyor. Hangi TF'de bakıldığı açık soru (bkz. 07).
 
 ## Eksik olan
 - LuxAlgo SMC'nin ayarları: FVG açık mı, FVG timeframe'i, auto threshold, OB mitigation (07'de soruldu).
