@@ -1,0 +1,86 @@
+# Tek kural seti (çelişkiler çözüldü) — sürüm 1
+
+Bu dosya, 05'teki 12 çelişkinin her biri için **tek** bir tanım seçer. Seçim sırası:
+1. **Kullanıcının kendi cevabı** (5 Ekim 2026'da sorulan 12 soru, aşağıda).
+2. **Kullanıcının ekranındaki indikatör: LuxAlgo "Smart Money Concepts".** Ekran görüntülerindeki "Historical Monochrome" ibaresi bu indikatörün *Mode = Historical*, *Style = Monochrome* ayarıdır. Gri kutuları ve kesikli çizgileri bu indikatör çiziyor; bot da aynı tanımı kullanmalı.
+3. **ICT'nin kendi öğretisi**, yani 2022 Mentorship. Kaynaklar arasında en çok tekrar edilen ve iç tutarlılığı olan sürümü seçildi.
+4. **Kalan durumlarda** ölçülebilir ve geleceğe bakmayan en basit sürüm.
+
+## Kullanıcının cevapları (5 Ekim 2026)
+| # | Soru | Cevap |
+|---|---|---|
+| 1 | Gri bölgeler | LuxAlgo indikatörü çiziyor: OB, FVG ve likidite seviyeleri |
+| 2 | Kırılım şartı | **Gövde kapanışı şart** |
+| 3 | Kırılım zaman dilimi | Genelde **5m**, bazen **3m** |
+| 4 | Giriş | **FVG'nin yarısına (%50, CE) gelmesini bekliyorum; dönüşe başlarsa giriyorum** |
+| 5 | Bias | **1H / 4H trend** |
+| 6 | EMA 20/50/100/200 | **Trend filtresi**: ters diziliyse girmiyor |
+| 7 | Saatler | **London ve NY** |
+| 8 | Haber günleri (NFP, CPI, FOMC) | **İşlem yapmıyor** |
+| 9 | Stop / hedef | **Stop sweep ucunun ötesi, hedef karşı likidite** |
+| 10 | Enstrümanlar | **EURUSD, XAUUSD, NAS100** (GBPUSD yok) |
+| 11 | Uygulanan model | **ICT 2022 modeli + TTFM (fraktal)** |
+| 12 | Tarihli işlem kaydı | **Yok** |
+
+## LuxAlgo SMC'nin tanımları (bot bunları birebir kopyalamalı)
+Kaynak: LuxAlgo SMC Pine v5 kodunun açık kaynak Python portu (`github.com/makeitcount89/Trading-Smart-Money`, `scripts/engine.py`). LuxAlgo'nun kendi sitesi ve TradingView bu ortamdan erişilemedi.
+
+| Öğe | LuxAlgo'daki tanım |
+|---|---|
+| **Swing / pivot** | `leg(size)`: `size` bar önceki tepe, ondan sonraki `size` barın en yükseğinden yüksekse pivot tepe olur. Yalnız sağ taraf kontrol edilir. **Internal yapı: size = 5 (sabit). Swing yapı: size = 50.** |
+| **Kırılım (BOS/CHoCH)** | `close[i-1] <= pivot` ve `close[i] > pivot` → yükseliş kırılımı. **Kapanışla** olur, fitil saymaz. Trend tersine dönüyorsa CHoCH, aynı yöndeyse BOS. Internal yapı çizgileri **kesikli**, swing yapı çizgileri düz. |
+| **Order Block** | Kırılım olunca, kırılan pivotun barından kırılım barına kadar (kırılım barı hariç) **en düşük dibi olan bar** bullish OB'dir; bearish için en yüksek tepeli bar. Bölge = o barın **tüm high-low aralığı**. Aralığı ≥ 2 × ATR(200) olan barlarda high/low yer değiştirir, böylece aşırı fitil OB ucu olmaz. Internal ve swing OB'den en son 5'er tane gösterilir. |
+| **OB'nin geçersizleşmesi** | Varsayılan "High/Low": bullish OB'nin dibinin altına inilince silinir, bearish OB'nin tepesinin üstüne çıkılınca silinir. |
+| **FVG** | 3 mum boşluğu + orta mumun gövde değişimi otomatik eşiğin üstünde olmalı (*auto threshold*). **Bu ayrıntı kaynak koddan teyit edilemedi;** kullanıcının ekranındaki FVG ayarları sorulacak (bkz. sonuç bölümü). |
+| **EQH/EQL** | Eşit tepe/dip: fark < eşik × ATR. Varsayılan eşik ve onay barı sayısı **teyit edilemedi.** |
+
+**Önemli sonuç:** LuxAlgo'nun bullish OB'si çoğu zaman **sweep yapan mumun kendisidir**, çünkü kırılan tepe ile kırılım arasındaki en düşük dipli bar odur. Kullanıcının "stop sweep ucunun ötesi" kuralı bu yüzden "stop OB'nin ötesi" ile neredeyse aynı yere düşüyor. İki kaynak birbirini tutuyor.
+
+## 12 çelişkinin çözümü
+| # | Konu | Seçilen tek tanım | Neden |
+|---|---|---|---|
+| 1 | Killzone saatleri (NY saati) | **London 02:00-05:00.** NY: **EURUSD ve XAUUSD 07:00-10:00, NAS100 08:30-11:00.** TR saati yazın +7, kışın +8 (London 09:00-12:00 TR, NY 14:00-17:00 TR). | ICT'nin kendi pencereleri. Forex için 07-10, endeks için 08:30-11:00 tüm ICT kaynaklarında aynı; diğer varyantlar bunların genişletilmiş hali. Kullanıcı London + NY dedi. |
+| 2 | Stop | **Sweep ucu + spread payı.** Bu, LuxAlgo OB'sinin ucuyla genelde aynı yer. | Kullanıcı cevabı, MSS makalesi ve infinity-trading akış şeması aynı; LuxAlgo OB tanımı destekliyor. "FVG mumunun dibi" daha dar ve daha çabuk stoplanan bir varyant. |
+| 3 | Giriş | **FVG'nin %50'si (CE).** Fiyat CE'ye değdikten sonra giriş TF'sinde (5m/3m) **dönüş yönünde kapanan ilk mum** = giriş anı. | Kullanıcı cevabı ("yarısına gelip bekliyorum, dönerse giriyorum"). ICT'de CE resmi bir seviye. |
+| 4 | MSS'in kırdığı swing | **Sweep ucundan ÖNCE oluşan son karşı internal pivot** (LuxAlgo size = 5). Long için: dipten önceki son internal tepe. Short için ayna: tepeden önceki son internal dip. | Akış şemasının buy versiyonu ile infinity-trading aynı söylüyor. SG'nin sell versiyonundaki "SONRA" ifadesi aynalık mantığına ters; baskı hatası sayıldı. LuxAlgo'nun internal CHoCH'u da tam bu pivotu kullanıyor. |
+| 5 | Fitil mi kapanış mı | **Her yerde gövde kapanışı:** MSS/BOS kırılımı, FVG'nin geçersizleşmesi, IFVG oluşumu. | Kullanıcı cevabı + LuxAlgo (close ile kırılım) + ICT notları + EM + MSS makalesi aynı. Yalnız FluxCharts "fitil de olur" diyor; azınlık. |
+| 6 | Adlandırma | **MSS** = sweep sonrası, önceki internal trendin tersine ilk kapanışlı kırılım (LuxAlgo'da internal CHoCH). **BOS** = trend yönünde kapanışlı kırılım. CHoCH+, BMS, MSB, FMS adları kullanılmaz. | Tek sözlük; LuxAlgo'nun etiketleriyle birebir eşleşiyor, böylece kullanıcı botun mesajını grafikte görebilir. |
+| 7 | Order Block | **LuxAlgo tanımı** (yukarıdaki tablo). ICT'nin "son karşı renkli mum" tanımı yalnız not olarak kalır. | Kullanıcının gördüğü gri kutular bunlar. Bot farklı tanım kullanırsa kullanıcının grafiğiyle uyuşmaz. |
+| 8 | OTE | **0.62-0.79 (0.705 orta).** Yalnız etiket olarak; filtre değil. | Kullanıcı OTE değil CE kullanıyor. Aralık ICT'nin kendi Fib ayarı. |
+| 9 | Hedef | **En yakın karşı likidite:** karşı internal/swing pivot, EQH/EQL, seans ucu, PDH/PDL; hangisi önce geliyorsa. **Asgari R ≥ 1.5 (geçici).** | Kullanıcı cevabı. Sabit R'yi kaynakların yarısı söylüyor, yarısı söylemiyor. 1.5, kullanıcının görsellerindeki en düşük R; onaya sunulacak. |
+| 10 | Bias | **1H ve 4H yapı yönü aynı** (LuxAlgo swing/internal trend) **+ EMA filtresi**: long için EMA20 > EMA50 > EMA100 > EMA200, short için tersi. | Kullanıcı cevabı (1H/4H trend + EMA trend filtresi). EMA'ların hangi TF'de bakıldığı açık soru (aşağıda). |
+| 11 | FVG dolunca ne olur | **FVG gövdeyle kapanarak geçilirse geçersizdir.** İçine fitil atıp dönmesi "tutuyor" demektir. | ICT notları + #5 ile tutarlı. LQ'nun "tamamen dolunca dönüş" iddiası kanıtsız ve diğerleriyle çelişiyor. |
+| 12 | FVG adları | **Bullish FVG / bearish FVG.** "Undervalued/overrated" kullanılmaz. | Standart ICT dili. |
+
+Ek tek tanımlar:
+- **Premium/discount:** Fib sweep ucundan MSS bacağının ucuna çekilir. Long'da CE bu aralığın %50'sinin **altında** olmalı, short'ta üstünde. Kaynak: 2022 akış şeması.
+- **Sweep:** Fiyat bir likidite seviyesinin (internal/swing pivot, EQH/EQL, Asya/London ucu, PDH/PDL) ötesine **fitille** geçer, mum seviyenin içinde kapanır. Tek mum veya birkaç mum fark etmez.
+- **Displacement:** MSS'i yapan bacakta en az bir FVG olmalı. Ayrıca bir sayısal eşik konmadı; FVG şartı ICT'nin kendi filtresi.
+- **TTFM'nin rolü:** Zorunlu değil, **ek etiket.** "4H'ta son kapanan mum C2 (önceki 4H mumunun ucunu alıp içeri kapandı) ve yönü sinyalle aynı" ise mesajda "TTFM uyumlu" yazar. Kullanıcı hem 2022 hem TTFM dedi; ikisini birden zorunlu yapmak sinyali çok azaltır, önce etiket olarak ölçülecek.
+- **Haber:** NFP, CPI, FOMC günlerinde **gün boyu sinyal yok.**
+
+## Tek akış: AZG-K1 v1 (EURUSD, XAUUSD, NAS100)
+1. **Gün filtresi:** NFP/CPI/FOMC günü değilse devam.
+2. **Pencere:** London 02:00-05:00 NY; NY 07:00-10:00 (NAS100: 08:30-11:00).
+3. **Bias:** 1H ve 4H yapı aynı yönde ve EMA20/50/100/200 o yönde dizili. Değilse sinyal yok.
+4. **Bağlam:** Fiyat, bias yönündeki dolmamış bir 15m/1H LuxAlgo OB veya FVG'nin içinde ya da bir likidite seviyesinde (seans ucu, PDH/PDL, EQH/EQL).
+5. **Sweep:** Bias'ın tersi yöndeki likidite fitille alınır, mum içeri kapanır.
+6. **MSS:** 5m'de (veya 3m'de) sweep'ten önceki son karşı internal pivot gövde kapanışıyla kırılır; kıran bacakta FVG var.
+7. **Konum:** FVG'nin CE'si sweep→MSS aralığının doğru yarısında (long için discount).
+8. **Tetik:** Fiyat CE'ye değer; ardından 5m/3m'de bias yönünde kapanan ilk mum. **Telegram mesajı bu anda gider.**
+9. **İç değerlendirme (mesajda TP/SL/lot yok):** Geçersizlik = sweep ucu + spread. Hedef = en yakın karşı likidite. R < 1.5 ise sinyal gönderilmez.
+10. **Etiketler:** TTFM uyumu, OTE içinde mi, SMT (EURUSD↔DXY, NAS100↔SPX, XAU↔DXY), Silver Bullet penceresi mi.
+
+## Hâlâ açık kalan 3 küçük soru
+1. **EMA'lara hangi TF'de bakıyorsun?** Giriş grafiğinde (5m/3m) mi, 1H'ta mı? "Ters diziliyse girmem" derken 4'ünün de sıralı olması mı şart, yoksa fiyatın EMA200'ün doğru tarafında olması yeter mi?
+2. **LuxAlgo ayarların:** FVG açık mı? FVG'nin timeframe'i ne (chart mı, 15m mi)? *Auto threshold* açık mı? OB *mitigation* "Close" mu "High/Low" mu? Ayar ekranının ekran görüntüsü yeterli.
+3. **Asgari R:** 1.5 uygun mu?
+
+## Kayıt olmadığı için doğrulama planı değişti
+Kullanıcının tarihli işlem kaydı yok. Bu yüzden:
+1. **AZG-K1 v1 bir araştırma klasöründe çalıştırılır**, bota eklenmez. Son 6-12 ayın verisinde ürettiği sinyaller grafik görselleriyle kullanıcıya gösterilir.
+2. **Kullanıcı her birine "girerdim / girmezdim / şu yüzden"** der. Bu, eksik olan etiketli veri setini oluşturur.
+3. Uyuşmazlıklar parametreye çevrilir. Ardından ön-kayıt yapılır ve hiç bakılmamış dönemde maliyetli test yapılır.
+4. **Bundan sonra her işlem için kayıt tutulmalı:** tarih, saat, enstrüman, yön, giriş, stop, hedef, sonuç ve tek cümle gerekçe. Bunun için hazır bir şablon yapılabilir.
+
+Bot koduna dokunulmadı; kullanıcı "başla" demeden dokunulmayacak.

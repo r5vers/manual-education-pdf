@@ -1,5 +1,11 @@
 # Kullanıcının kendi işlemleri (39 ekran görüntüsü)
 
+> **Kullanıcının cevabı (5 Ekim 2026):**
+> - Gri bölgeleri **LuxAlgo Smart Money Concepts** indikatörü çiziyor: OB, FVG ve likidite.
+> - Kesikli çizgiler de büyük olasılıkla aynı indikatörün internal yapı (BOS/CHoCH) çizgileri; internal yapı LuxAlgo'da kesikli çizilir.
+> - Kırılımlar 5m'de (bazen 3m) ve gövde kapanışıyla.
+> - Ayrıntı: [07_TEK_KURAL_SETI.md](../07_TEK_KURAL_SETI.md).
+
 Kaynak: Notion ana sayfanın sonundaki galeri.
 - Görseller **açıklamasız** geldi. Aşağıdaki her satır, görselden **gözle okunan yaklaşık** bilgidir; kesin fiyat ya da tarih değildir.
 - Sıra, iPhone dosya numarasına göre verildi. IMG_7132-8487 eski, IMG_0416-1816 yeni (sayaç 9999'dan sonra başa döner). Fiyat seviyeleri de bu sırayı destekliyor: EURUSD ~1.03 → 1.17, XAU ~4.000+, NAS ~29.000.

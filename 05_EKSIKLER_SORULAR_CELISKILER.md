@@ -1,5 +1,10 @@
 # Eksikler, kafa karıştıran noktalar, çelişkiler ve sorular
 
+> **Güncelleme (5 Ekim 2026):**
+> - D bölümündeki 12 soru cevaplandı.
+> - B bölümündeki 12 çelişkinin her biri için tek tanım seçildi.
+> - Cevaplar ve kararlar için bkz. **[07_TEK_KURAL_SETI.md](07_TEK_KURAL_SETI.md)**. Bu dosyadaki çelişkiler artık geçmiş kayıt olarak duruyor.
+
 ## A. Eksikler (dosyalarda olmayan ama bot için gereken)
 1. **Kullanıcının kendi kuralları yok.** Notion ana sayfada kullanıcının yazdığı tek bir kural veya açıklama cümlesi yok; her şey dış kaynak kopyası.
 2. **Ekran görüntülerinin açıklaması yok.** 39 görselde neden girildiği, gri bölgenin hangi TF'den geldiği, bias'ın ne olduğu yazmıyor.

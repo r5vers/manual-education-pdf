@@ -1,5 +1,10 @@
 # Bot için kural taslağı (ONAYSIZ, yalnız öneri)
 
+> **Güncelleme (5 Ekim 2026):**
+> - Bu taslağın yerine **[07_TEK_KURAL_SETI.md](../07_TEK_KURAL_SETI.md)** içindeki AZG-K1 v1 geçti; kullanıcının cevaplarıyla netleştirildi.
+> - Aşağıdaki tablo yalnız tarihçe için duruyor.
+> - Kullanıcının tarihli işlem kaydı olmadığı için doğrulama planı da 07'de güncellendi.
+
 Bu dosya, botun (Telegram gözcüsü) kullanıcının tarzını taklit edebilmesi için gereken mekanik tanımı **taslak** olarak verir.
 - Bot kodunda hiçbir değişiklik yapılmadı. Kullanıcı "başla" demeden yapılmayacak.
 - Bot işlem açmaz; TP, SL veya lot vermez. Yalnız yön ve gerekçe bildirir. Aşağıdaki stop/hedef seviyeleri yalnız **iç değerlendirme** (sinyal tuttu mu?) içindir.

@@ -6,7 +6,7 @@ Kaynaklar: Kullanıcı ekran görüntüleri (K28, K31, K33, K35-K39), N-ana (Flu
 | İndikatör | Nerede görüldü | Ayar (ekrandan okunan) | Kaynak kodu |
 |---|---|---|---|
 | Seans / killzone kutuları | Hemen hepsi | Etiketler: "London", "NY AM", "LO close"; ayar satırı "30 30 America/New_York Normal 1800-1801" | **Yok** |
-| LuxAlgo, "Historical Monochrome" stili | K28, K31, K33, K39 | Stil adından LuxAlgo **Smart Money Concepts** olduğu tahmin ediliyor (yapı etiketleri, OB, FVG) | **Yok** |
+| LuxAlgo **Smart Money Concepts** (Mode: Historical, Style: Monochrome) | K28, K31, K33, K39 | Kullanıcı teyit etti: gri bölgeler bu indikatörün OB/FVG/likidite çizimleri. Tanımları için bkz. 07_TEK_KURAL_SETI | Açık kaynak (CC BY-NC-SA 4.0); Python portu: github.com/makeitcount89/Trading-Smart-Money |
 | EMA 50 (close) | K33 | — | Standart |
 | EMA 20 / 50 / 100 / 200 | K35-K39 | Yeşil tonlarda 4 EMA | Standart |
 | Pozisyon aracı (long/short kutusu) | Hepsi | TradingView standart | — |
@@ -36,6 +36,5 @@ Kaynaklar: Kullanıcı ekran görüntüleri (K28, K31, K33, K35-K39), N-ana (Flu
 - Kullanıcının son dönem grafiklerinde EMA 20/50/100/200 var. Bunun **ne için** kullanıldığı (trend filtresi mi, dinamik destek mi) **kullanıcıya sorulmalı.**
 
 ## Eksik olan
-- LuxAlgo SMC'nin hangi sürümü ve hangi ayarları kullanılıyor?
+- LuxAlgo SMC'nin ayarları: FVG açık mı, FVG timeframe'i, auto threshold, OB mitigation (07'de soruldu).
 - Seans indikatörünün adı ve kaynak kodu?
-- Gri bölgeleri çizen bir indikatör var mı?

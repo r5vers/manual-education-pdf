@@ -6,7 +6,8 @@ Bu repo, Notion'daki **"azeghor manual education"** sayfasının ve buraya yükl
 - **Amaç:** Telegram gözcü botu için kullanıcının işlem tarzını kurallara dökmek.
 
 ## Okuma sırası
-1. **[05_EKSIKLER_SORULAR_CELISKILER.md](05_EKSIKLER_SORULAR_CELISKILER.md):** Önce bu. Eksikler, çelişkiler ve 12 soru burada.
+0. **[07_TEK_KURAL_SETI.md](07_TEK_KURAL_SETI.md):** Senin 12 cevabın ve çelişkilerin tek tanıma indirgenmiş hali. **Botun esas alacağı kural seti bu dosya.**
+1. **[05_EKSIKLER_SORULAR_CELISKILER.md](05_EKSIKLER_SORULAR_CELISKILER.md):** Eksikler ve çelişkilerin ilk tespiti (tarihçe).
 2. **[03_KULLANICININ_ISLEMLERI/](03_KULLANICININ_ISLEMLERI/README.md):** 39 kendi ekran görüntün ve onlardan çıkan ortak desen.
 3. **[02_MODELLER/00_model_karsilastirma.md](02_MODELLER/00_model_karsilastirma.md):** Tüm modeller tek tabloda.
 4. **[04_BOT_ICIN_KURAL_TASLAKLARI/](04_BOT_ICIN_KURAL_TASLAKLARI/README.md):** Bot için taslak kural ve doğrulama planı (onaysız).
@@ -44,6 +45,7 @@ Bu repo, Notion'daki **"azeghor manual education"** sayfasının ve buraya yükl
   README.md
 05_EKSIKLER_SORULAR_CELISKILER.md
 06_SOZLUK.md               çeviri düzeltmeleri + kısaltmalar
+07_TEK_KURAL_SETI.md       12 cevap + çözülmüş çelişkiler + AZG-K1 v1
 ```
 
 ## Kaynak gösterimi
